@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
-const Button = (props: { children: React.ReactElement }) => {
+const Button = (props: { children: ReactNode }) => {
   const { children } = props;
   return <button>{children}</button>;
 };

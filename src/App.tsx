@@ -11,9 +11,7 @@ const App = () => {
       <div>
         <Link to="/">Home</Link>
         <br />
-        <Link to="/page1">page1</Link>
-        <br />
-        <Link to="/page1/detail">detail</Link>
+        <Link to="/task">todo</Link>
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/task" element={<Task />}></Route>

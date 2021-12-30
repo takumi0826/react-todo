@@ -1,24 +1,113 @@
-import axios, { AxiosRequestConfig } from 'axios';
-import React, { useEffect } from 'react';
+import TaskInput from 'atoms/button/TaskInput';
+import TaskTitle from 'atoms/button/TaskTitle';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import CompleteTask from 'organisms/tasks/CompleteTask';
+import DoTask from 'organisms/tasks/DoTask';
+import { async } from 'q';
+import React, { useEffect, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import { DoneTask, TaskInfo } from 'types/TaskType';
 
-const Page1 = () => {
+const url = `http://localhost:8080/api`;
+
+const Task = () => {
+  const [todos, setTodos] = useState<TaskInfo[] | null>([]);
+  useEffect(() => {
+    void getTask();
+  }, []);
+
   const getTask = async () => {
-    const url = `http://localhost:8080/api/get-task`;
-    const headers = {
-      "Content-type": "application/json; charset=UTF-8",
-    };
-    const response = await axios.get(url, { headers });
-    console.log(response);
+    const taskUrl = `${url}/get-task`;
+    await axios
+      .get(taskUrl)
+      .then((res: AxiosResponse<TaskInfo[] | null>) => {
+        console.log(res.data);
+        setTodos(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
-  void getTask();
+
+  const handleDone = async (task: DoneTask) => {
+    const taskUrl = `${url}/done-task`;
+    await axios
+      .put(taskUrl, task)
+      .then((res) => {
+        console.log(res.data);
+        if (res.data === 1) {
+          void getTask();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const deleteTask = async (id: number) => {
+    const taskUrl = `${url}/delete-task/${id}`;
+    await axios
+      .delete(taskUrl)
+      .then((res) => {
+        console.log(res.data);
+        if (res.data === 1) {
+          void getTask();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleEnter = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    void (await addTask(e.currentTarget.value));
+  };
+
+  const addTask = async (text: string) => {
+    // console.log("clicked!");
+    if (!text.trim()) return;
+    const taskUrl = `${url}/insert-task`;
+    await axios
+      .post(taskUrl, { title: text })
+      .then((res) => {
+        console.log(res.data);
+        if (res.data === 1) {
+          void getTask();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div className="">
-      <h1>ページ１</h1>
-      {/* <Outlet /> */}
+      <TaskInput handleEnter={handleEnter} addTask={addTask} />
+      <TaskTitle>未完了</TaskTitle>
+      {todos?.map((todo) => {
+        return (
+          <>
+            <DoTask key={todo.id} todo={todo} handleDone={handleDone} />
+          </>
+        );
+      })}
+      <TaskTitle>完了</TaskTitle>
+      {todos?.map((todo) => {
+        return (
+          <>
+            <CompleteTask
+              key={todo.id}
+              todo={todo}
+              handleDone={handleDone}
+              deleteTask={deleteTask}
+            />
+          </>
+        );
+      })}
     </div>
   );
 };
 
-export default Page1;
+export default Task;

@@ -1,10 +1,27 @@
+import axios, { AxiosRequestConfig } from 'axios';
 import React from 'react';
+import { DoneTask, TaskInfo } from 'types/TaskType';
 
-const DoTask = () => {
+type Props = {
+  todo: TaskInfo;
+  handleDone: (task: DoneTask) => void;
+};
+
+const DoTask = (props: Props) => {
+  const { todo, handleDone } = props;
   return (
-    <div>
-      <p>do</p>
-    </div>
+    <>
+      {!todo.done && (
+        <ul>
+          <li>
+            <p>{todo.title}</p>
+            <button onClick={() => handleDone({ id: todo.id, done: true })}>
+              完了
+            </button>
+          </li>
+        </ul>
+      )}
+    </>
   );
 };
 
