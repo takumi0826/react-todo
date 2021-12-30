@@ -1,19 +1,14 @@
-import React, { useState } from 'react';
+import React, { ChangeEventHandler, useState } from 'react';
 
 type Props = {
   handleEnter: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   addTask: (text: string) => void;
+  text: string;
 };
 
 const TaskInput = (props: Props) => {
-  const { handleEnter, addTask } = props;
-  const [text, setText] = useState("");
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(text);
-
-    if (!e.currentTarget.value.trim()) return;
-    setText(e.currentTarget.value);
-  };
+  const { handleEnter, addTask, handleChange, text } = props;
   return (
     <>
       <input

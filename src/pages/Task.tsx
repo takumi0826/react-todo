@@ -12,6 +12,7 @@ const url = `http://localhost:8080/api`;
 
 const Task = () => {
   const [todos, setTodos] = useState<TaskInfo[] | null>([]);
+  const [text, setText] = useState("");
   useEffect(() => {
     void getTask();
   }, []);
@@ -75,6 +76,7 @@ const Task = () => {
         console.log(res.data);
         if (res.data === 1) {
           void getTask();
+          setText("");
         }
       })
       .catch((error) => {
@@ -82,9 +84,19 @@ const Task = () => {
       });
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.currentTarget.value.trim()) return;
+    setText(e.currentTarget.value);
+  };
+
   return (
     <div className="">
-      <TaskInput handleEnter={handleEnter} addTask={addTask} />
+      <TaskInput
+        handleEnter={handleEnter}
+        addTask={addTask}
+        handleChange={handleChange}
+        text={text}
+      />
       <TaskTitle>未完了</TaskTitle>
       {todos?.map((todo) => {
         return (
