@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { DoneTask, TaskInfo } from 'types/TaskType';
 
 type Props = {
@@ -15,6 +16,7 @@ const DoTask = (props: Props) => {
         <ul>
           <li>
             <p>{todo.title}</p>
+            <Link to={`/edit?id=${todo.id}`}>編集</Link>
             <button onClick={() => handleDone({ id: todo.id, done: true })}>
               完了
             </button>

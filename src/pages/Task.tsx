@@ -3,9 +3,7 @@ import TaskTitle from 'atoms/button/TaskTitle';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import CompleteTask from 'organisms/tasks/CompleteTask';
 import DoTask from 'organisms/tasks/DoTask';
-import { async } from 'q';
 import React, { useEffect, useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
 import { DoneTask, TaskInfo } from 'types/TaskType';
 
 const url = `http://localhost:8080/api`;
@@ -22,7 +20,6 @@ const Task = () => {
     await axios
       .get(taskUrl)
       .then((res: AxiosResponse<TaskInfo[] | null>) => {
-        console.log(res.data);
         setTodos(res.data);
       })
       .catch((error) => {
@@ -35,7 +32,6 @@ const Task = () => {
     await axios
       .put(taskUrl, task)
       .then((res) => {
-        console.log(res.data);
         if (res.data === 1) {
           void getTask();
         }
@@ -50,7 +46,6 @@ const Task = () => {
     await axios
       .delete(taskUrl)
       .then((res) => {
-        console.log(res.data);
         if (res.data === 1) {
           void getTask();
         }
@@ -73,7 +68,6 @@ const Task = () => {
     await axios
       .post(taskUrl, { title: text })
       .then((res) => {
-        console.log(res.data);
         if (res.data === 1) {
           void getTask();
           setText("");

@@ -1,5 +1,6 @@
 import './App.css';
 
+import EditTask from 'organisms/tasks/EditTask';
 import Home from 'pages/Home';
 import Task from 'pages/Task';
 import * as React from 'react';
@@ -15,6 +16,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/task" element={<Task />}></Route>
+          <Route path="/edit" element={<EditTask />}></Route>
         </Routes>
       </div>
     </BrowserRouter>
