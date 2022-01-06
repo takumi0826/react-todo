@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import { useGetOneTask } from 'hooks/useGetOneTask';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { TaskInfo } from 'types/TaskType';
@@ -6,28 +7,13 @@ import { TaskInfo } from 'types/TaskType';
 const url = `http://localhost:8080/api`;
 
 const EditTask = () => {
-  const [todo, setTodo] = useState<TaskInfo | null>(null);
   const [text, setText] = useState("");
-  const search = useLocation().search;
-  const query = new URLSearchParams(search);
   const navigate = useNavigate();
+  const { todo, getOneTask } = useGetOneTask();
 
   useEffect(() => {
     void getOneTask();
   }, []);
-  const getOneTask = async () => {
-    const id = query.get("id");
-    const taskUrl = `${url}/one-task?id=${Number(id)}`;
-    await axios
-      .get(taskUrl)
-      .then((res: AxiosResponse<TaskInfo | null>) => {
-        console.log(res.data);
-        setTodo(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
   const updateTask = async (todo: TaskInfo) => {
     if (!text.trim()) {
