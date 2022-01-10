@@ -1,8 +1,9 @@
 import TaskInput from 'atoms/button/TaskInput';
 import TaskTitle from 'atoms/button/TaskTitle';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import CompleteTask from 'organisms/tasks/CompleteTask';
-import DoTask from 'organisms/tasks/DoTask';
+import CompleteTask from 'molecules/CompleteTask';
+import DoTask from 'molecules/DoTask';
+import { TodoProvider } from 'providers/TodoProvider';
 import React, { useEffect, useState } from 'react';
 import { DoneTask, TaskInfo } from 'types/TaskType';
 
@@ -84,35 +85,37 @@ const Task = () => {
   };
 
   return (
-    <div className="">
-      <TaskInput
-        handleEnter={handleEnter}
-        addTask={addTask}
-        handleChange={handleChange}
-        text={text}
-      />
-      <TaskTitle>未完了</TaskTitle>
-      {todos?.map((todo) => {
-        return (
-          <>
-            <DoTask key={todo.id} todo={todo} handleDone={handleDone} />
-          </>
-        );
-      })}
-      <TaskTitle>完了</TaskTitle>
-      {todos?.map((todo) => {
-        return (
-          <>
-            <CompleteTask
-              key={todo.id}
-              todo={todo}
-              handleDone={handleDone}
-              deleteTask={deleteTask}
-            />
-          </>
-        );
-      })}
-    </div>
+    <TodoProvider>
+      <div className="">
+        <TaskInput
+          handleEnter={handleEnter}
+          addTask={addTask}
+          handleChange={handleChange}
+          text={text}
+        />
+        <TaskTitle>未完了</TaskTitle>
+        {todos?.map((todo) => {
+          return (
+            <>
+              <DoTask key={todo.id} todo={todo} handleDone={handleDone} />
+            </>
+          );
+        })}
+        <TaskTitle>完了</TaskTitle>
+        {todos?.map((todo) => {
+          return (
+            <>
+              <CompleteTask
+                key={todo.id}
+                todo={todo}
+                handleDone={handleDone}
+                deleteTask={deleteTask}
+              />
+            </>
+          );
+        })}
+      </div>
+    </TodoProvider>
   );
 };
 

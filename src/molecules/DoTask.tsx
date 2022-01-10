@@ -1,4 +1,3 @@
-import axios, { AxiosRequestConfig } from 'axios';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { DoneTask, TaskInfo } from 'types/TaskType';

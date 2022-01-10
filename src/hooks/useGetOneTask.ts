@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
-import { useState } from 'react';
+import { TodoContext } from 'providers/TodoProvider';
+import { useContext, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { TaskInfo } from 'types/TaskType';
 
@@ -7,7 +8,8 @@ export const useGetOneTask = () => {
   const url = `http://localhost:8080/api`;
   const search = useLocation().search;
   const query = new URLSearchParams(search);
-  const [todo, setTodo] = useState<TaskInfo | null>(null);
+  // const [todo, setTodo] = useState<TaskInfo | null>(null);
+  const { setTodo } = useContext(TodoContext);
 
   const getOneTask = async () => {
     const id = query.get("id");
@@ -23,5 +25,5 @@ export const useGetOneTask = () => {
       });
   };
 
-  return { todo, getOneTask };
+  return { getOneTask };
 };
