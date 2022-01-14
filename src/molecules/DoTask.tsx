@@ -3,17 +3,18 @@ import { Link } from 'react-router-dom';
 import { DoneTask, TaskInfo } from 'types/TaskType';
 
 type Props = {
+  key: number;
   todo: TaskInfo;
   handleDone: (task: DoneTask) => void;
 };
 
 const DoTask = (props: Props) => {
-  const { todo, handleDone } = props;
+  const { key, todo, handleDone } = props;
   return (
     <>
       {!todo.done && (
         <ul>
-          <li>
+          <li key={key}>
             <p>{todo.title}</p>
             <Link to={`/edit?id=${todo.id}`}>編集</Link>
             <button onClick={() => handleDone({ id: todo.id, done: true })}>
