@@ -1,5 +1,10 @@
 import React, { ChangeEventHandler, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
+type Inputs = {
+  example: string;
+  exampleRequired: string;
+};
 type Props = {
   handleEnter: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -8,6 +13,13 @@ type Props = {
 };
 
 const TaskInput = (props: Props) => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
   const { handleEnter, addTask, handleChange, text } = props;
   return (
     <>
